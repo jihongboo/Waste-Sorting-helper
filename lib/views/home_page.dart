@@ -8,8 +8,6 @@ import 'package:waste_sorting_helper/views/wast_list_page.dart';
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<WastProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("垃圾分类助手"),
@@ -17,7 +15,13 @@ class MyHomePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           SearchTextField(),
-          if (provider.searchString == "") WastCollections() else SearchList()
+          Consumer<WastProvider>(builder: (context, provider, _) {
+            if (provider.searchString == "") {
+              return WastCollections();
+            } else {
+              return SearchList();
+            }
+          })
         ],
       ),
     );
@@ -75,8 +79,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<WastProvider>(context);
-
     return Container(
       margin: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -100,11 +102,13 @@ class _SearchTextFieldState extends State<SearchTextField> {
                 onTap: () {
                   focusNode.unfocus();
                   _controller.text = "";
+                  final provider = Provider.of<WastProvider>(context);
                   provider.searchString = "";
                 },
               ),
               hintText: '输入垃圾名称'),
           onChanged: (str) {
+            final provider = Provider.of<WastProvider>(context);
             provider.searchString = str;
           },
         ),

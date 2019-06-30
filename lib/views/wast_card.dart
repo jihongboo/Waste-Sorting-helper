@@ -9,10 +9,9 @@ class WastCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<WastProvider>(context);
-
     return GestureDetector(
       onTap: () {
+        final provider = Provider.of<WastProvider>(context);
         provider.clearWastSearch();
       },
       child: Container(
